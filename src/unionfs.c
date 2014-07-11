@@ -6,8 +6,10 @@
 * Podgorny" should be fine.
 *
 * License: BSD-style license
-* Copyright: Radek Podgorny <radek@podgorny.cz>,
-*            Bernd Schubert <bernd-schubert@gmx.de>
+* Original Copyright: Radek Podgorny <radek@podgorny.cz>,
+*                     Bernd Schubert <bernd-schubert@gmx.de>
+*
+* Copyright: Yusuke DOI <doi@gohan.to>
 */
 
 #ifdef linux
@@ -47,21 +49,6 @@
 #include "rmdir.h"
 #include "readdir.h"
 #include "cow.h"
-
-
-static struct fuse_opt unionfs_opts[] = {
-	FUSE_OPT_KEY("--help", KEY_HELP),
-	FUSE_OPT_KEY("--version", KEY_VERSION),
-	FUSE_OPT_KEY("-h", KEY_HELP),
-	FUSE_OPT_KEY("-V", KEY_VERSION),
-	FUSE_OPT_KEY("stats", KEY_STATS),
-	FUSE_OPT_KEY("cow", KEY_COW),
-	FUSE_OPT_KEY("noinitgroups", KEY_NOINITGROUPS),
-	FUSE_OPT_KEY("statfs_omit_ro", KEY_STATFS_OMIT_RO),
-	FUSE_OPT_KEY("chroot=%s,", KEY_CHROOT),
-	FUSE_OPT_KEY("max_files=%s", KEY_MAX_FILES),
-	FUSE_OPT_END
-};
 
 
 static int unionfs_chmod(const char *path, mode_t mode) {
@@ -179,7 +166,7 @@ static int unionfs_getattr(const char *path, struct stat *stbuf) {
 	DBG_IN();
 
 	if (uopt.stats_enabled && strcmp(path, STATS_FILENAME) == 0) {
-		memset(stbuf, 0, sizeof(stbuf));
+		memset(stbuf, 0, sizeof(struct stat));
 		stbuf->st_mode = S_IFREG | 0444;
 		stbuf->st_nlink = 1;
 		stbuf->st_size = STATS_SIZE;
@@ -761,7 +748,7 @@ static int unionfs_setxattr(const char *path, const char *name, const char *valu
 }
 #endif // HAVE_SETXATTR
 
-static struct fuse_operations unionfs_oper = {
+struct fuse_operations unionfs_oper = {
 	.chmod	= unionfs_chmod,
 	.chown	= unionfs_chown,
 	.create 	= unionfs_create,
@@ -793,6 +780,7 @@ static struct fuse_operations unionfs_oper = {
 #endif
 };
 
+#if 0
 int main(int argc, char *argv[]) {
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 
@@ -824,3 +812,4 @@ int main(int argc, char *argv[]) {
 	res = fuse_main(args.argc, args.argv, &unionfs_oper, NULL);
 	return uopt.doexit ? uopt.retval : res;
 }
+#endif

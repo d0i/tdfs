@@ -107,7 +107,7 @@ int setfile(const char *path, struct stat *fs)
 			return (rval);
 		}
 #endif
-	return 0;
+	return rval;
 }
 
 /**

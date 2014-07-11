@@ -4,8 +4,10 @@
 * Option parser
 *
 * License: BSD-style license
-* Copyright: Radek Podgorny <radek@podgorny.cz>,
-*            Bernd Schubert <bernd-schubert@gmx.de>
+* Original Copyright: Radek Podgorny <radek@podgorny.cz>,
+*                     Bernd Schubert <bernd-schubert@gmx.de>
+*
+* Copyright: Yusuke DOI <doi@gohan.to>
 */
 
 #include <stdlib.h>
@@ -154,7 +156,7 @@ static void add_branch(char *branch) {
  * Options without any -X prefix, so these options define our branch paths.
  * example arg string: "branch1=RW:branch2=RO:branch3=RO"
  */
-static int parse_branches(const char *arg) {
+int parse_branches(const char *arg) {
 	// the last argument is  our mountpoint, don't take it as branch!
 	if (uopt.nbranches) return 0;
 
@@ -207,9 +209,9 @@ char * get_chroot(const char *arg)
 	return str;
 }
 
-static void print_help(const char *progname) {
+void print_help(const char *progname) {
 	printf(
-	"unionfs-fuse version "VERSION"\n"
+	"tdfs version "VERSION"\n"
 	"by Radek Podgorny <radek@podgorny.cz>\n"
 	"\n"
 	"Usage: %s [options] branch[=RO/RW][:branch...] mountpoint\n"
@@ -220,13 +222,10 @@ static void print_help(const char *progname) {
 	"    -h   --help            print help\n"
 	"    -V   --version         print version\n"
 	"\n"
-	"UnionFS options:\n"
-	"    -o cow                 enable copy-on-write\n"
+	"TDFS options:\n"
+        "    -o count=N             access newest N directories\n"
 	"    -o stats               show statistics in the file 'stats' under the\n"
 	"                           mountpoint\n"
-	"    -o statfs_omit_ro      do not count blocks of ro-branches\n"
-	"    -o chroot=path         chroot into this path. Use this if you \n"
-        "                           want to have a union of \"/\" \n"
 	"    -o max_files=number    Increase the maximum number of open files\n"
 	"\n",
 	progname);
@@ -278,46 +277,3 @@ void unionfs_post_opts(void) {
 	}
 }
 
-int unionfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outargs) {
-	(void)data;
-
-	int res = 0; // for general purposes
-
-	switch (key) {
-		case FUSE_OPT_KEY_NONOPT:
-			res = parse_branches(arg);
-			if (res > 0) return 0;
-			uopt.retval = 1;
-			return 1;
-		case KEY_STATS:
-			uopt.stats_enabled = 1;
-			return 0;
-		case KEY_COW:
-			uopt.cow_enabled = true;
-			return 0;
-		case KEY_STATFS_OMIT_RO:
-			uopt.statfs_omit_ro = true;
-			return 0;
-		case KEY_NOINITGROUPS:
-			// option only for compatibility with older versions
-			return 0;
-		case KEY_CHROOT:
-			uopt.chroot = get_chroot(arg);
-			return 0;
-		case KEY_MAX_FILES:
-			set_max_open_files(arg);
-			return 0;
-		case KEY_HELP:
-			print_help(outargs->argv[0]);
-			fuse_opt_add_arg(outargs, "-ho");
-			uopt.doexit = 1;
-			return 0;
-		case KEY_VERSION:
-			printf("unionfs-fuse version: "VERSION"\n");
-			uopt.doexit = 1;
-			return 1;
-		default:
- 			uopt.retval = 1;
-			return 1;
-	}
-}

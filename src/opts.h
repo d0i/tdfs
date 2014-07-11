@@ -44,8 +44,10 @@ enum {
 extern uopt_t uopt;
 
 
+int set_max_open_files(const char *arg);
 void uopt_init();
-int unionfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outargs);
 void unionfs_post_opts();
+int parse_branches(const char *arg);
+void print_help(const char *progname);
 
 #endif
