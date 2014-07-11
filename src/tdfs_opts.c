@@ -19,6 +19,7 @@
 #include "version.h"
 #include "string.h"
 
+#error "not yet implemented"
 int tdfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outargs) {
   (void)data;
 
