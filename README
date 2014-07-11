@@ -5,8 +5,8 @@ TDFS: Time Domain Union File System
 == What is This? ==
 
 Based on unionfs-fuse, this makes 'time domain file system' that
-enables file coordination method described by Dr. Noguchi (a.k.a. 超整
-理法 -- I don't know official translation, maybe super organization
+enables document management method described by Dr. Noguchi (a.k.a. 超
+整理法 -- I don't know official translation, maybe super organization
 method?).  The principle of the method is very simple:
 
 - Make a folder (directory) for each of a period of time
