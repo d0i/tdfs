@@ -1,273 +1,0 @@
-
-cow.c,138
-static int do_create(32,545
-int path_create(73,1807
-int path_create_cutlast(118,3084
-int cow_cp(133,3368
-int copy_directory(188,4526
-
-cow.h,20
-#define COW_H8,151
-
-cow_utils.c,203
-#define S_ISTXT 52,2066
-int setfile(58,2140
-static int setlink(116,3559
-int copy_file(133,3844
-#define	RETAINBITS 213,5800
-int copy_link(237,6433
-int copy_fifo(263,6915
-int copy_special(278,7221
-
-cow_utils.h,258
-#define COW_UTILS_H8,157
-#define VM_AND_BUFFER_CACHE_SYNCHRONIZED10,178
-#define MAXBSIZE 11,219
-struct cow 13,242
-	mode_t umask;14,255
-	uid_t uid;15,270
-	char  *from_path;from_path18,299
-	struct stat *stat;stat19,318
-	char *to_path;to_path22,360
-
-debug.c,45
-FILE* dbgfile 10,125
-int debug_init(12,148
-
-debug.h,112
-#define DEBUG_H7,101
-	#define DBG_IN(13,202
-	#define DBG(15,252
-	#define DBG_IN(21,390
-	#define DBG(22,409
-
-findbranch.c,168
-static int find_branch(56,1993
-int find_rorw_branch(98,2902
-int find_rw_branch_cutlast(107,3087
-int find_rw_branch_cow(161,4478
-int find_lowest_rw_branch(196,5245
-
-findbranch.h,111
-#define FINDBRANCH_H8,158
-typedef enum searchflag 10,180
-	RWRO,11,206
-	RWONLY12,213
-} searchflag_t;13,221
-
-general.c,261
-static bool filedir_hidden(38,726
-bool path_hidden(57,1100
-int remove_hidden(97,2250
-filetype_t path_is_dir(124,2783
-static int do_create_whiteout(139,3045
-int hide_file(168,3778
-int hide_dir(176,3963
-int maybe_whiteout(185,4215
-int set_owner(199,4552
-
-general.h,222
-#define GENERAL_H8,155
-enum  whiteout 13,216
-	WHITEOUT_FILE,14,233
-	WHITEOUT_DIR15,249
-typedef enum filetype 18,267
-	NOT_EXISTING=19,291
-	IS_DIR=20,309
-	IS_FILE=21,320
-} filetype_t;22,332
-#define usyslog(43,1350
-
-hashtable.c,330
-static const unsigned int primes[primes15,349
-const unsigned int prime_table_length 24,596
-const float max_load_factor 25,670
-create_hashtable(29,806
-hash(57,1875
-hashtable_expand(71,2311
-hashtable_count(130,4327
-hashtable_insert(137,4479
-hashtable_search(163,5429
-hashtable_remove(181,5971
-hashtable_destroy(216,6845
-
-hashtable.h,162
-#define __HASHTABLE_CWC22_H__4,108
-#define DEFINE_HASHTABLE_INSERT(101,3880
-#define DEFINE_HASHTABLE_SEARCH(119,4424
-#define DEFINE_HASHTABLE_REMOVE(137,5010
-
-hashtable_itr.c,200
-hashtable_iterator(12,361
-hashtable_iterator_key(42,1190
-hashtable_iterator_value(46,1266
-hashtable_iterator_advance(54,1533
-hashtable_iterator_remove(99,2681
-hashtable_iterator_search(128,3532
-
-hashtable_itr.h,316
-#define __HASHTABLE_ITR_CWC22__4,116
-struct hashtable_itr11,414
-    struct hashtable *h;h13,437
-    struct entry *e;e14,462
-    struct entry *parent;parent15,483
-    unsigned int index;16,509
-hashtable_iterator_key(32,911
-hashtable_iterator_value(41,1165
-#define DEFINE_HASHTABLE_ITERATOR_SEARCH(71,2277
-
-hashtable_private.h,493
-#define __HASHTABLE_PRIVATE_CWC22_H__4,122
-struct entry9,265
-    void *k,k11,280
-    void *k, *v;v11,280
-    unsigned int h;12,297
-    struct entry *next;next13,317
-struct hashtable 16,345
-    unsigned int tablelength;17,364
-    struct entry **table;table18,394
-    unsigned int entrycount;19,420
-    unsigned int loadlimit;20,449
-    unsigned int primeindex;21,477
-    unsigned int (*hashfn)hashfn22,506
-    int (*eqfn)eqfn23,544
-indexFor(33,838
-#define freekey(46,1201
-
-opts.c,365
-int set_max_open_files(27,459
-uopt_t uopt;48,936
-void uopt_init(50,950
-char *make_absolute(make_absolute60,1290
-char *add_trailing_slash(add_trailing_slash100,2304
-static void add_branch(120,2835
-static int parse_branches(157,3905
-char * get_chroot(184,4702
-static void print_help(210,5306
-void unionfs_post_opts(238,6331
-int unionfs_opt_proc(281,7580
-
-opts.h,452
-#define OPTS_H8,152
-#define ROOT_SEP 17,232
-	int nbranches;20,271
-	branch_entry_t *branches;branches21,287
-	bool stats_enabled;23,315
-	bool cow_enabled;24,336
-	bool statfs_omit_ro;25,355
-	int doexit;26,377
-	int retval;27,390
-	char *chroot;chroot28,403
-} uopt_t;30,448
-	KEY_STATS,33,466
-	KEY_COW,34,478
-	KEY_STATFS_OMIT_RO,35,488
-	KEY_NOINITGROUPS,36,509
-	KEY_CHROOT,37,528
-	KEY_MAX_FILES,38,541
-	KEY_HELP,39,557
-	KEY_VERSION40,568
-
-readdir.c,95
-static bool is_hiding(39,763
-static void read_whiteouts(64,1268
-int unionfs_readdir(84,1668
-
-readdir.h,23
-#define READDIR_H2,18
-
-rmdir.c,84
-static int rmdir_rw(39,872
-static int rmdir_ro(57,1339
-int unionfs_rmdir(84,1873
-
-rmdir.h,22
-#define RMDIR_H8,153
-
-stats.c,109
-void stats_init(13,164
-void stats_sprint(17,243
-void stats_add_read(24,532
-void stats_add_written(33,831
-
-stats.h,492
-#define STATS_H7,101
-#define STATS_FILENAME 10,119
-#define STATS_SIZE 11,151
-struct stats_t 14,177
-	unsigned int r_b,16,230
-	unsigned int r_b, r_k,16,230
-	unsigned int r_b, r_k, r_m,16,230
-	unsigned int r_b, r_k, r_m, r_g,16,230
-	unsigned int r_b, r_k, r_m, r_g, r_t;16,230
-	unsigned int w_b,17,277
-	unsigned int w_b, w_k,17,277
-	unsigned int w_b, w_k, w_m,17,277
-	unsigned int w_b, w_k, w_m, w_g,17,277
-	unsigned int w_b, w_k, w_m, w_g, w_t;17,277
-struct stats_t stats;22,360
-
-string.c,172
-char *whiteout_tag(whiteout_tag31,585
-int build_path(54,1159
-char *u_dirname(u_dirname86,1803
-static unsigned int elfhash(113,2387
-unsigned int string_hash(145,3281
-
-string.h,97
-#define UNIONFS_STRING_H8,162
-#define BUILD_PATH(22,598
-static inline int string_equal(29,889
-
-unionfs.c,1079
-	#define _XOPEN_SOURCE 15,489
-static struct fuse_opt unionfs_opts[unionfs_opts52,1075
-static int unionfs_chmod(67,1532
-static int unionfs_chown(82,1827
-static int unionfs_create(101,2239
-static int unionfs_flush(134,3181
-static int unionfs_fsync(157,3615
-static int unionfs_getattr(178,3999
-static void * unionfs_init(214,5035
-static int unionfs_link(231,5518
-static int unionfs_mkdir(261,6389
-static int unionfs_mknod(280,6859
-static int unionfs_open(318,7933
-static int unionfs_read(358,8808
-static int unionfs_readlink(385,9396
-static int unionfs_release(403,9735
-static int unionfs_rename(419,10149
-static int statvfs_local(500,12598
-static int unionfs_statfs(547,13997
-static int unionfs_symlink(614,15722
-static int unionfs_truncate(632,16145
-static int unionfs_utimens(648,16446
-static int unionfs_write(685,17566
-static int unionfs_getxattr(699,17882
-static int unionfs_listxattr(715,18229
-static int unionfs_removexattr(731,18552
-static int unionfs_setxattr(747,18868
-static struct fuse_operations unionfs_oper 764,19265
-int main(796,20089
-
-unionfs.h,220
-#define UNIONFS_H8,155
-#define PATHLEN_MAX 10,174
-#define HIDETAG 11,199
-#define METADIR 12,226
-#define S_PROT_MASK 15,286
-	char *path;path18,383
-	int fd;19,396
-	unsigned char rw;20,454
-} branch_entry_t;21,495
-
-unlink.c,87
-static int unlink_ro(38,914
-static int unlink_rw(59,1415
-int unionfs_unlink(74,1673
-
-unlink.h,23
-#define UNLINK_H8,154
-
-version.h,23
-#define VERSION 7,104
