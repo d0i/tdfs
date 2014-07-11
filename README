@@ -1,0 +1,29 @@
+-*- coding: utf-8 -*-
+
+TDFS: Time Domain File System
+
+== What is This? ==
+
+Based on unionfs-fuse this makes 'time domain file system' that
+enables file coordination method described by Dr. Noguchi (a.k.a. 超整
+理法 -- I don't know official translation, maybe super organization
+method?).  The principle of the method is very simple:
+
+- Make a folder (directory) for each of a period of time
+  (e.g. every Month)
+- If you need to access a file, search from the newest folder and 
+  go back to past chronologically
+- If you found a file you need, move it to the newest folder
+- You may drop or archive the oldest folder if you need more space
+
+With TDFS, you can get the benefits of 超整理法. Version 1.0 of TDFS
+*will* do:
+
+- unionfs-like file access to $(ROOT)/YYYY/MM directories
+  (real filesystem)
+- mounted dir gives newest N months files
+- copy-on-write by default: all updated files will be copied to
+  newest directory
+
+This project is based on unionfs-fuse and licensed under BSD license.
+
