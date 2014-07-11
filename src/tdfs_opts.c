@@ -35,6 +35,7 @@ static int parse_workroot(const char *workroot){
   char dummy_branch_str[1024];
   char *wp = dummy_branch_str;
   char *ep = dummy_branch_str + sizeof(dummy_branch_str);
+  char *p; // tmp
   int wr = 0;
 
   // make a dummy YYYY/MM strings -- FIXME this is stupid --
@@ -43,10 +44,19 @@ static int parse_workroot(const char *workroot){
   now = localtime(&t);
   year = now->tm_year + 1900; 
   month = now->tm_mon + 1; // 0 is January
+  if ((p = getenv("TDFS_DEBUG_SET_YEAR")) != NULL){
+    year = atoi(p);
+  }
+  if ((p = getenv("TDFS_DEBUG_SET_MONTH")) != NULL){
+    month = atoi(p);
+  }
+  if (year <= 1900 || month < 1 || month > 12){
+    fprintf(stderr, "malformed year-month: Y:%d, M:%d\n", year, month);
+    exit(1);
+  }
   wr = snprintf(wp, ep-wp, "%s/%04d/%02d=RW", workroot, year, month);
   wp += wr;
   for (i = 1; i < uopt.n_month; i++){
-    fprintf(stderr, "## dummy_branch_str = %s\n", dummy_branch_str);
     month --;
     if (month == 0){
       month = 12;

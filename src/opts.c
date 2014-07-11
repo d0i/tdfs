@@ -268,6 +268,7 @@ void unionfs_post_opts(void) {
 		if (mkdir(path, 0755) < 0){
 			if (errno != EEXIST){
 				perror("mkdir");
+				fprintf(stderr, "path=%s\n", path);
 				exit(1);
 			}
 		}
