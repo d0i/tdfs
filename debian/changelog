@@ -1,9 +1,9 @@
-tdfs (0.1)
+tdfs (0.1) unstable; urgency=low
 
-	* forked from unionfs-fuse 0.24-2.2ubuntu1
-	* renamed binary name and other symbols to tdfs
+  * forked from unionfs-fuse 0.24-2.2ubuntu1
+  * renamed binary name and other symbols to tdfs
 
--- Yusuke DOI <doi@gohan.to> Fri Jul 11 14:45:07 2014 +0900
+ -- Yusuke DOI <doi@gohan.to>  Fri, 11 Jul 2014 14:45:07 +0900
 
 unionfs-fuse (0.24-2.2ubuntu1) raring; urgency=low
 
