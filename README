@@ -1,6 +1,6 @@
 -*- coding: utf-8 -*-
 
-TDFS: Time Domain File System
+TDFS: Time Domain Union File System
 
 == What is This? ==
 
@@ -39,6 +39,4 @@ This project is based on unionfs-fuse and licensed under BSD license.
   copy-on-write? (but other processes such as nautilus will read
   the files to make thumbnails, etc.)
 
-
-
-
+- Does not automatically make YYYY part (for now).
