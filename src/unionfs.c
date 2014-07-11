@@ -50,7 +50,6 @@
 #include "readdir.h"
 #include "cow.h"
 
-
 static int unionfs_chmod(const char *path, mode_t mode) {
 	DBG_IN();
 
@@ -780,36 +779,10 @@ struct fuse_operations unionfs_oper = {
 #endif
 };
 
-#if 0
-int main(int argc, char *argv[]) {
-	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
-
-	int res = debug_init();
-	if (res != 0) return res;
-
-	uopt_init();
-
-	if (fuse_opt_parse(&args, NULL, unionfs_opts, unionfs_opt_proc) == -1) return 1;
-
-	if (!uopt.doexit) {
-		if (uopt.nbranches == 0) {
-			printf("You need to specify at least one branch!\n");
-			return 1;
-		}
-
-		if (uopt.stats_enabled) stats_init(&stats);
-	}
-
-	// enable fuse permission checks, we need to set this, even we we are
-	// not root, since we don't have our own access() function
-	if (fuse_opt_add_arg(&args, "-odefault_permissions")) {
-		fprintf(stderr, "Severe failure, can't enable permssion checks, aborting!\n");
-		exit(1);
-	}
-	unionfs_post_opts();
-
-	umask(0);
-	res = fuse_main(args.argc, args.argv, &unionfs_oper, NULL);
-	return uopt.doexit ? uopt.retval : res;
-}
-#endif
+/*
+ * Local Variables:
+ * c-basic-offset: 8
+ * tab-width: 8
+ * indent-tabs-mode: t
+ * End:
+ */

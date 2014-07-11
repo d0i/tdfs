@@ -38,6 +38,7 @@ static struct fuse_opt tdfs_opts[] = {
 	//FUSE_OPT_KEY("statfs_omit_ro", KEY_STATFS_OMIT_RO),
 	//FUSE_OPT_KEY("chroot=%s,", KEY_CHROOT),
 	FUSE_OPT_KEY("max_files=%s", KEY_MAX_FILES),
+	FUSE_OPT_KEY("count=%d", KEY_N),
 	FUSE_OPT_END
 };
 
@@ -53,7 +54,7 @@ int main(int argc, char **argv){
 
   if (!uopt.doexit) {
     if (uopt.nbranches == 0) {
-      printf("You need to specify at least one branch!\n");
+      print_help(argv[0]);
       return 1;
     }
 

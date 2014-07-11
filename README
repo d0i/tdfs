@@ -4,7 +4,7 @@ TDFS: Time Domain File System
 
 == What is This? ==
 
-Based on unionfs-fuse this makes 'time domain file system' that
+Based on unionfs-fuse, this makes 'time domain file system' that
 enables file coordination method described by Dr. Noguchi (a.k.a. 超整
 理法 -- I don't know official translation, maybe super organization
 method?).  The principle of the method is very simple:
@@ -17,7 +17,7 @@ method?).  The principle of the method is very simple:
 - You may drop or archive the oldest folder if you need more space
 
 With TDFS, you can get the benefits of 超整理法. Version 1.0 of TDFS
-*will* do:
+will do:
 
 - unionfs-like file access to $(ROOT)/YYYY/MM directories
   (real filesystem)
@@ -26,4 +26,19 @@ With TDFS, you can get the benefits of 超整理法. Version 1.0 of TDFS
   newest directory
 
 This project is based on unionfs-fuse and licensed under BSD license.
+(90% of the files are as same as unionfs-fuse)
+
+== BUGS/WISHES ==
+
+- You need to restart the process every month.
+  (no dynamic self-reconfiguration yet -- anyway it may make things
+   strange -- how can I do for ever-open files?)
+
+- Read files are not copied to newest workdir -- this is different
+  from the original method. Do we need copy-on-read in addition to
+  copy-on-write? (but other processes such as nautilus will read
+  the files to make thumbnails, etc.)
+
+
+
 

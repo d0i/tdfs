@@ -51,8 +51,7 @@ uopt_t uopt;
 
 void uopt_init() {
 	memset(&uopt, 0, sizeof(uopt_t)); // initialize options with zeros first
-
-	// so far nothing more required, so far initializing with zeros sufficient
+	uopt.n_month = TDFS_N_DEFAULT;
 }
 
 /**
@@ -212,10 +211,9 @@ char * get_chroot(const char *arg)
 void print_help(const char *progname) {
 	printf(
 	"tdfs version "VERSION"\n"
-	"by Radek Podgorny <radek@podgorny.cz>\n"
+	"by Yusuke DOI <doi@gohan.to>\n"
 	"\n"
-	"Usage: %s [options] branch[=RO/RW][:branch...] mountpoint\n"
-	"The first argument is a colon separated list of directories to merge\n"
+	"Usage: %s [options] workroot mountpoint\n"
 	"\n"
 	"general options:\n"
 	"    -o opt,[opt...]        mount options\n"
@@ -223,12 +221,12 @@ void print_help(const char *progname) {
 	"    -V   --version         print version\n"
 	"\n"
 	"TDFS options:\n"
-        "    -o count=N             access newest N directories\n"
+        "    -o count=N             access newest N directories (default is %d)\n"
 	"    -o stats               show statistics in the file 'stats' under the\n"
 	"                           mountpoint\n"
 	"    -o max_files=number    Increase the maximum number of open files\n"
 	"\n",
-	progname);
+	progname, TDFS_N_DEFAULT);
 }
 
 /**
@@ -267,6 +265,13 @@ void unionfs_post_opts(void) {
 			BUILD_PATH(path, uopt.chroot, uopt.branches[i].path);
 		}
 
+		if (mkdir(path, 0755) < 0){
+			if (errno != EEXIST){
+				perror("mkdir");
+				exit(1);
+			}
+		}
+		
 		int fd = open(path, O_RDONLY);
 		if (fd == -1) {
 			fprintf(stderr, "\nFailed to open %s: %s. Aborting!\n\n",
@@ -277,3 +282,10 @@ void unionfs_post_opts(void) {
 	}
 }
 
+/*
+ * Local Variables:
+ * c-basic-offset: 8
+ * tab-width: 8
+ * indent-tabs-mode: t
+ * End:
+ */

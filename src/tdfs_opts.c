@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <time.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 
@@ -19,7 +20,65 @@
 #include "version.h"
 #include "string.h"
 
-#error "not yet implemented"
+
+/**
+ * workroot should have YYYY/MM format
+ */
+static int parse_workroot(const char *workroot){
+  // the last argument is  our mountpoint, don't take it as branch!
+  if (uopt.nbranches) return 0;
+  if (uopt.n_month <= 0) {fprintf(stderr, "month shall be set\n");}
+
+  int i;
+  int year = 0;
+  int month = 0;
+  char dummy_branch_str[1024];
+  char *wp = dummy_branch_str;
+  char *ep = dummy_branch_str + sizeof(dummy_branch_str);
+  int wr = 0;
+
+  // make a dummy YYYY/MM strings -- FIXME this is stupid --
+  struct tm *now;
+  time_t t = time(NULL);
+  now = localtime(&t);
+  year = now->tm_year + 1900; 
+  month = now->tm_mon + 1; // 0 is January
+  wr = snprintf(wp, ep-wp, "%s/%04d/%02d=RW", workroot, year, month);
+  wp += wr;
+  for (i = 1; i < uopt.n_month; i++){
+    fprintf(stderr, "## dummy_branch_str = %s\n", dummy_branch_str);
+    month --;
+    if (month == 0){
+      month = 12;
+      year --;
+    }
+    wr = snprintf(wp, ep-wp, ":%s/%04d/%02d=RO", workroot, year, month);
+    if (wr >= ep-wp){
+      fprintf(stderr, "too long period (internal error)\n");
+      fprintf(stderr, "dummy_branch_str = %s\n", dummy_branch_str);
+      exit(1);
+    }
+    wp += wr;
+  }
+
+  return parse_branches(dummy_branch_str);
+}
+
+// parse nmonth or return -1;
+int parse_nmonth(const char *arg){
+  int nmonth = -1;
+  if (sscanf(arg, "count=%d\n", &nmonth) != 1){
+    fprintf(stderr, "%s failed to parse arg('%s'), aborting!\n",
+	    __func__, arg);
+    exit(1);
+  }
+  if (nmonth <= 0){
+    fprintf(stderr, "N should be positive. Aborting!\n");
+    exit(1);
+  }
+  return nmonth;
+}
+
 int tdfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outargs) {
   (void)data;
 
@@ -28,7 +87,7 @@ int tdfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outarg
 
   switch (key) {
   case FUSE_OPT_KEY_NONOPT:
-    res = parse_branches(arg);
+    res = parse_workroot(arg);
     if (res > 0) return 0;
     uopt.retval = 1;
     return 1;
@@ -47,6 +106,9 @@ int tdfs_opt_proc(void *data, const char *arg, int key, struct fuse_args *outarg
     printf("tdfs version: "VERSION"\n");
     uopt.doexit = 1;
     return 1;
+  case KEY_N:
+    uopt.n_month = parse_nmonth(arg);
+    return 0;
   default:
     uopt.retval = 1;
     return 1;

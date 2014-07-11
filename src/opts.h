@@ -1,7 +1,8 @@
 /*
 * License: BSD-style license
-* Copyright: Radek Podgorny <radek@podgorny.cz>,
-*            Bernd Schubert <bernd-schubert@gmx.de>
+* Original Copyright: Radek Podgorny <radek@podgorny.cz>,
+*                     Bernd Schubert <bernd-schubert@gmx.de>
+* Copyright: Yusuke DOI <doi@gohan.to>
 */
 
 #ifndef OPTS_H
@@ -26,16 +27,20 @@ typedef struct {
 	int doexit;
 	int retval;
 	char *chroot; 		// chroot we might go into
+	int n_month; // how many months we look back?
 
 } uopt_t;
+
+#define TDFS_N_DEFAULT 3
 
 enum {
 	KEY_STATS,
 	KEY_COW,
-	KEY_STATFS_OMIT_RO,
-	KEY_NOINITGROUPS,
-	KEY_CHROOT,
+	//KEY_STATFS_OMIT_RO,
+	//KEY_NOINITGROUPS,
+	//KEY_CHROOT,
 	KEY_MAX_FILES,
+	KEY_N,
 	KEY_HELP,
 	KEY_VERSION
 };
@@ -51,3 +56,11 @@ int parse_branches(const char *arg);
 void print_help(const char *progname);
 
 #endif
+
+/*
+ * Local Variables:
+ * c-basic-offset: 8
+ * tab-width: 8
+ * indent-tabs-mode: t
+ * End:
+ */
