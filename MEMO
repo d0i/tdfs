@@ -1,2 +1,22 @@
 -*- coding: utf-8 -*-
 
+(This file is just an internal memo to record considerations, not
+intended to be read by non-developers)
+
+* Fri Jul 11 14:26:32 2014
+
+プロジェクト開始
+
+unionfs-fuseベースに決定。コードはimportしてないけど、とりあえずライセ
+ンスとクレジットだけ忘れないうちにコピー。
+
+やるべきこと
+
+- 引数を改造して、YYYY/MM の root dir からN samplesをマウントするようにする
+- 最新dir以外は常にcowにする
+- 引数でNを設定できるようにする
+- unionfs-fuse のディレクトリのマウント順を時刻をモニタして動的に更新する
+  (月イチだから、後でもいいか？)
+
+
+

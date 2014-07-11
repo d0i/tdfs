@@ -1,0 +1,19 @@
+Source: tdfs
+Section: misc
+Priority: optional
+Maintainer: Yusuke DOI <doi@gohan.to>
+Build-Depends: debhelper (>= 7.0.0), libfuse-dev, cmake
+Standards-Version: 3.9.0
+
+Package: tdfs
+Architecture: linux-any
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}, ${misc:Depends}, fuse
+Description: Time Domain File System based on UnionFS
+ This package help you to organize accessed files in
+ time domain (YYYY/MM) directories. You may find newest
+ N working directories in union-mounted access directory
+ (so easy to find your files) and if you update a file
+ it is copied to newest working directory.
+ (work-in-progress project based on unionfs-fuse)
+
